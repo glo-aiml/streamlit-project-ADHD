@@ -84,15 +84,14 @@ fig = px.box(
 )
 st.plotly_chart(fig, use_container_width=True)
 
-# Correlation Bar
+# Correlation Bar Chart
 
 st.subheader("Correlation Between Symptoms and Activity Metrics")
 
 corrs = {}
 
 for metric in selected_features:
-    if metric != "ID":
-        corrs[metric] = data["ASRS"].corr(data[metric])
+    corrs[metric] = data["ASRS"].corr(data[metric])
 
 corr_df = pd.DataFrame(
     corrs.items(),
@@ -102,14 +101,14 @@ corr_df = pd.DataFrame(
 corr_df["Metric"] = corr_df["Metric"].map(feature_labels)
 
 fig = px.bar(
-    corr_df.sort_values("Correlation"),
-    x="Correlation",
-    y="Metric",
-    orientation="h",
+    corr_df,
+    x="Metric",
+    y="Correlation",
     color="Correlation",
-    color_continuous_scale="RdBu"
+    title="Correlation Between Activity Signals and ADHD Symptoms"
 )
 
+st.plotly_chart(fig, use_container_width=True)
 
 # Summary statistics
 st.subheader("Summary Statistics")
