@@ -86,7 +86,7 @@ st.plotly_chart(fig, use_container_width=True)
 
 # Correlation Bar Chart
 
-st.subheader("Correlation Between Symptoms and Activity Metrics")
+st.subheader("Which signals appear most related to ADHD symptoms?")
 
 corrs = {}
 
