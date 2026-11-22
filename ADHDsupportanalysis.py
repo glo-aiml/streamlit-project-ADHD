@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 import numpy as np
 import plotly.express as px
+import statsmodels.api as sm
 
 
 features = pd.read_csv("features.csv", sep=";")
