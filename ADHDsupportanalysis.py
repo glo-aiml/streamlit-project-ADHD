@@ -120,20 +120,16 @@ corr_df["Direction"] = np.where(
     "Negative"
 )
 
-st.subheader("Strength of Relationship with ADHD Symptoms")
-
 fig = px.bar(
     corr_df.sort_values("Strength", ascending=False),
     x="Strength",
     y="Metric",
     orientation="h",
     color="Strength",
-    title="Which Activity Signals Show the Strongest Relationship?"
+    title="Strength of Relationship with ADHD Symptoms"
 )
 
 st.plotly_chart(fig, use_container_width=True)
-
-st.subheader("Relationship Direction")
 
 display_df = corr_df[[
     "Metric",
@@ -144,6 +140,7 @@ display_df = corr_df[[
     ascending=False
 )
 
+st.write("**Relationship Direction**")
 st.dataframe(display_df)
 
 
