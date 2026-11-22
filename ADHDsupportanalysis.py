@@ -84,39 +84,32 @@ fig = px.box(
 )
 st.plotly_chart(fig, use_container_width=True)
 
-# Correlation Heatmap
+# Correlation Bar
 
 st.subheader("Correlation Between Symptoms and Activity Metrics")
 
-correlation_columns = [
-    "ASRS",
-    "WURS",
-    "HADS_A",
-    "HADS_D",
-    "MADRS",
-    "ACC__mean",
-    "ACC__standard_deviation",
-    "ACC__root_mean_square",
-    "ACC__mean_abs_change",
-    "ACC__sample_entropy"
-]
+corrs = {}
 
-corr = data[correlation_columns].corr(numeric_only=True)
+for metric in selected_features:
+    if metric != "ID":
+        corrs[metric] = data["ASRS"].corr(data[metric])
 
-fig, ax = plt.subplots(figsize=(10, 8))
-
-sns.heatmap(
-    corr,
-    annot=True,
-    cmap="coolwarm",
-    center=0,
-    fmt=".2f",
-    ax=ax
+corr_df = pd.DataFrame(
+    corrs.items(),
+    columns=["Metric", "Correlation"]
 )
 
-plt.title("Correlation Heatmap")
+corr_df["Metric"] = corr_df["Metric"].map(feature_labels)
 
-st.pyplot(fig)
+fig = px.bar(
+    corr_df.sort_values("Correlation"),
+    x="Correlation",
+    y="Metric",
+    orientation="h",
+    color="Correlation",
+    color_continuous_scale="RdBu"
+)
+
 
 # Summary statistics
 st.subheader("Summary Statistics")
