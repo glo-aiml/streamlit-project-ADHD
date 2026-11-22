@@ -2,6 +2,8 @@ import pandas as pd
 import streamlit as st
 import numpy as np
 import plotly.express as px
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 # Load data
 features = pd.read_csv("features.csv", sep=";")
@@ -81,6 +83,40 @@ fig = px.box(
     }
 )
 st.plotly_chart(fig, use_container_width=True)
+
+# Correlation Heatmap
+
+st.subheader("Correlation Between Symptoms and Activity Metrics")
+
+correlation_columns = [
+    "ASRS",
+    "WURS",
+    "HADS_A",
+    "HADS_D",
+    "MADRS",
+    "ACC__mean",
+    "ACC__standard_deviation",
+    "ACC__root_mean_square",
+    "ACC__mean_abs_change",
+    "ACC__sample_entropy"
+]
+
+corr = data[correlation_columns].corr(numeric_only=True)
+
+fig, ax = plt.subplots(figsize=(10, 8))
+
+sns.heatmap(
+    corr,
+    annot=True,
+    cmap="coolwarm",
+    center=0,
+    fmt=".2f",
+    ax=ax
+)
+
+plt.title("Correlation Heatmap")
+
+st.pyplot(fig)
 
 # Summary statistics
 st.subheader("Summary Statistics")
