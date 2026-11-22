@@ -1,5 +1,6 @@
 import pandas as pd
 import streamlit as st
+import numpy as np
 import plotly.express as px
 
 
@@ -47,7 +48,7 @@ fig = px.histogram(
     x="ASRS",
     color="Group",
     nbins=20,
-    title="Distribution of ADHD Self-Report Scale (ASRS) Scores"
+    title="Distribution of ADHD Self-Report Scale Scores (ASRS)"
 )
 
 st.plotly_chart(fig, use_container_width=True)
