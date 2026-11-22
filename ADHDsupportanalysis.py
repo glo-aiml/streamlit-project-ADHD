@@ -103,7 +103,11 @@ fig2 = px.scatter(
     y=selected_metric,
     color="Group",
     hover_data=["ID"],
-    title=f"ASRS Score vs {feature_labels[selected_metric]}"
+    title=f"ASRS Score vs {feature_labels[selected_metric]}",
+    labels={
+        "ASRS": "ADHD Symptom Score (ASRS)",
+        selected_metric: feature_labels[selected_metric]
+    }
 )
 
 st.plotly_chart(fig2, use_container_width=True)
