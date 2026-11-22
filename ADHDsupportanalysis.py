@@ -74,9 +74,12 @@ fig = px.box(
     x="Group",
     y=selected_metric,
     color="Group",
-    title=f"{feature_labels[selected_metric]} by Group"
+    title=f"{feature_labels[selected_metric]} by Group",
+    labels={
+        selected_metric: feature_labels[selected_metric],
+        "Group": "Participant Group"
+    }
 )
-
 st.plotly_chart(fig, use_container_width=True)
 
 # Summary statistics
