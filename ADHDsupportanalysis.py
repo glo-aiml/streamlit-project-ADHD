@@ -88,6 +88,18 @@ st.plotly_chart(fig, use_container_width=True)
 
 st.subheader("Which signals appear most related to ADHD symptoms?")
 
+st.info("""
+Strength shows how strongly a metric is related to ADHD symptom scores,
+regardless of whether the relationship is positive or negative.
+
+Direction indicates whether the metric tends to increase alongside ADHD
+symptom scores (positive) or decrease as ADHD symptom scores increase
+(negative).
+
+For identifying potentially useful support signals, strength is generally
+more important than direction.
+""")
+
 corrs = {}
 
 for metric in selected_features:
@@ -100,15 +112,40 @@ corr_df = pd.DataFrame(
 
 corr_df["Metric"] = corr_df["Metric"].map(feature_labels)
 
+corr_df["Strength"] = corr_df["Correlation"].abs()
+
+corr_df["Direction"] = np.where(
+    corr_df["Correlation"] >= 0,
+    "Positive",
+    "Negative"
+)
+
+st.subheader("Strength of Relationship with ADHD Symptoms")
+
 fig = px.bar(
-    corr_df,
-    x="Metric",
-    y="Correlation",
-    color="Correlation",
-    title="Correlation Between Activity Signals and ADHD Symptoms"
+    corr_df.sort_values("Strength", ascending=False),
+    x="Strength",
+    y="Metric",
+    orientation="h",
+    color="Strength",
+    title="Which Activity Signals Show the Strongest Relationship?"
 )
 
 st.plotly_chart(fig, use_container_width=True)
+
+st.subheader("Relationship Direction")
+
+display_df = corr_df[[
+    "Metric",
+    "Correlation",
+    "Direction"
+]].sort_values(
+    "Correlation",
+    ascending=False
+)
+
+st.dataframe(display_df)
+
 
 # Summary statistics
 st.subheader("Summary Statistics")
